@@ -1,0 +1,23 @@
+[
+  {
+    "ID": 0,
+    "Name": "",
+    "LevelDie": "6",
+    "LevelBonus": "0",
+    "Forms": [
+      {
+        "Form": "",
+        "FormDescription": ""
+      }
+    ],
+    "Effect": "",
+    "EffectOptions": [
+      {
+        "StartRange": "1",
+        "EndRange": "10",
+        "EffectDescription": ""
+      }
+    ],
+    "Source": ""
+  }
+]
