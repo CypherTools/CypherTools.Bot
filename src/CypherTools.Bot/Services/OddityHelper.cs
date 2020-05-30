@@ -13,12 +13,10 @@ namespace CypherTools.Bot.Services
     {
         public static async Task<List<Oddity>> GetAllOdditysAsync()
         {
-            using (var db = new CypherContext(DatabaseHelper.GetDbContextOptions()))
-            {
-                var oddList = await db.Oddities.ToListAsync();
+            using var db = new CypherContext(DatabaseHelper.GetDbContextOptions());
+            var oddList = await db.Oddities.ToListAsync();
 
-                return oddList;
-            }
+            return oddList;
         }
 
         public static async Task<Oddity> GetRandomOddityAsync()

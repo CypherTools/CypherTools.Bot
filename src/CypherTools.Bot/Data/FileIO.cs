@@ -15,8 +15,10 @@ namespace CypherTools.Bot.Data
             
             var ext = ".json";
 
-            var path = new List<string>();
-            path.Add(dataDir);
+            var path = new List<string>
+            {
+                dataDir
+            };
             if (database != null && database.Length != 0)
             {
                 path.Add(database);

@@ -60,9 +60,10 @@ namespace CypherTools.Bot.Data
         {
             var chr = await GetCurrentPlayersCharacterAsync(ctx);
 
-            var responses = new List<string>();
-
-            responses.Add("Here is your inventory:");
+            var responses = new List<string>
+            {
+                "Here is your inventory:"
+            };
             var i = 1;
             foreach (var inv in chr.Inventory)
             {

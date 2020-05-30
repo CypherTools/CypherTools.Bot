@@ -12,12 +12,10 @@ namespace CypherTools.Bot.Services
     {
         public static async Task<List<Cypher>> GetAllCyphersAsync()
         {
-            using (var db = new CypherContext(DatabaseHelper.GetDbContextOptions()))
-            {
-                var cyList = await db.Cyphers.Include(x => x.EffectOptions).Include(x => x.Forms).ToListAsync();
+            using var db = new CypherContext(DatabaseHelper.GetDbContextOptions());
+            var cyList = await db.Cyphers.Include(x => x.EffectOptions).Include(x => x.Forms).ToListAsync();
 
-                return cyList;
-            }
+            return cyList;
         }
 
         public static async Task<Cypher> GetRandomCypherAsync()
@@ -45,32 +43,26 @@ namespace CypherTools.Bot.Services
 
         public static async Task RemoveUnidentifiedCypherAsync(int unidentifiedCypherID)
         {
-            using (var db = new CypherContext(DatabaseHelper.GetDbContextOptions()))
-            {
-                var uCypherToRemove = new UnidentifiedCypher() { UnidentifiedCypherId = unidentifiedCypherID };
-                db.UnidentifiedCyphers.Remove(uCypherToRemove);
-                await db.SaveChangesAsync();
-            }
+            using var db = new CypherContext(DatabaseHelper.GetDbContextOptions());
+            var uCypherToRemove = new UnidentifiedCypher() { UnidentifiedCypherId = unidentifiedCypherID };
+            db.UnidentifiedCyphers.Remove(uCypherToRemove);
+            await db.SaveChangesAsync();
         }
 
         public static async Task SaveUnidentifiedCypherAsync(UnidentifiedCypher unidentifiedCypher)
         {
-            using (var db = new CypherContext(DatabaseHelper.GetDbContextOptions()))
-            {
-                db.UnidentifiedCyphers.Add(unidentifiedCypher);
+            using var db = new CypherContext(DatabaseHelper.GetDbContextOptions());
+            db.UnidentifiedCyphers.Add(unidentifiedCypher);
 
-                await db.SaveChangesAsync();
-            }
+            await db.SaveChangesAsync();
         }
 
         public static async Task<List<UnidentifiedCypher>> GetAllUnidentifiedCyphersAsync()
         {
-            using (var db = new CypherContext(DatabaseHelper.GetDbContextOptions()))
-            {
-                var cyList = await db.UnidentifiedCyphers.ToListAsync();
+            using var db = new CypherContext(DatabaseHelper.GetDbContextOptions());
+            var cyList = await db.UnidentifiedCyphers.ToListAsync();
 
-                return cyList;
-            }
+            return cyList;
         }
     }
 }

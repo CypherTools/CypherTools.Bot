@@ -28,73 +28,71 @@ namespace CypherTools.Bot.Services
 
         public static async Task<List<Character>> GetCurrentPlayersCharactersAsync(CommandContext ctx)
         {
-            using (var db = new CypherContext(DatabaseHelper.GetDbContextOptions()))
-            {
-                var chars = await db.Characters
-                    .Include(x => x.Cyphers)
-                    .Include(x => x.Inventory)
-                    .Include(x => x.RecoveryRolls)
-                    .Include(x => x.Pools)
-                    .Where(x => x.Player == ctx.Member.Username + ctx.Member.Discriminator)
-                    .ToListAsync();
+            using var db = new CypherContext(DatabaseHelper.GetDbContextOptions());
+            var chars = await db.Characters
+                .Include(x => x.Cyphers)
+                .Include(x => x.Inventory)
+                .Include(x => x.RecoveryRolls)
+                .Include(x => x.Pools)
+                .Include(x => x.Abilities)
+                .Where(x => x.Player == ctx.Member.Username + ctx.Member.Discriminator)
+                .ToListAsync();
 
-                return chars;
-            }
+            return chars;
         }
 
-        public static async Task SaveCurrentCharacterAsync(string playerId, Character charToSave)
+        public static async Task SaveCurrentCharacterAsync(Character charToSave)
         {
-            using (var db = new CypherContext(DatabaseHelper.GetDbContextOptions()))
+            using var db = new CypherContext(DatabaseHelper.GetDbContextOptions());
+            var chr = db.Characters
+                .Include(x => x.Cyphers)
+                .Include(x => x.Inventory)
+                .Include(x => x.RecoveryRolls)
+                .Include(x => x.Abilities)
+                .Include(x => x.Artifacts)
+                .FirstOrDefault(x => x.CharacterId == charToSave.CharacterId);
+
+            if (chr == null)
             {
-                var chr = db.Characters
-                    .Include(x => x.Cyphers)
-                    .Include(x => x.Inventory)
-                    .Include(x => x.RecoveryRolls)
-                    .FirstOrDefault(x => x.CharacterId == charToSave.CharacterId);
+                db.Characters.Add(charToSave);
+            }
+            else
+            {
+                db.Entry(chr).CurrentValues.SetValues(charToSave);
 
-                if (chr == null)
+                foreach (var cy in chr.Cyphers)
                 {
-                    db.Characters.Add(charToSave);
-                }
-                else
-                {
-                    db.Entry(chr).CurrentValues.SetValues(charToSave);
-
-                    foreach (var cy in chr.Cyphers)
+                    if (!charToSave.Cyphers.Any(x => x.CypherId == cy.CypherId))
                     {
-                        if (!charToSave.Cyphers.Any(x => x.CypherId == cy.CypherId))
-                        {
-                            db.Remove(cy);
-                        }
-                    }
-
-                    foreach (var inv in chr.Inventory)
-                    {
-                        if (!charToSave.Inventory.Any(x => x.InventoryId == inv.InventoryId))
-                        {
-                            db.Remove(inv);
-                        }
-                    }
-
-                    foreach (var roll in chr.RecoveryRolls)
-                    {
-                        if (!charToSave.RecoveryRolls.Any(x => x.RecoveryRollId == roll.RecoveryRollId))
-                        {
-                            db.Remove(roll);
-                        }
+                        db.Remove(cy);
                     }
                 }
 
-                try
+                foreach (var inv in chr.Inventory)
                 {
-                    await db.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    throw;
+                    if (!charToSave.Inventory.Any(x => x.InventoryId == inv.InventoryId))
+                    {
+                        db.Remove(inv);
+                    }
                 }
 
+                foreach (var roll in chr.RecoveryRolls)
+                {
+                    if (!charToSave.RecoveryRolls.Any(x => x.RecoveryRollId == roll.RecoveryRollId))
+                    {
+                        db.Remove(roll);
+                    }
+                }
+            }
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
             }
         }
     }

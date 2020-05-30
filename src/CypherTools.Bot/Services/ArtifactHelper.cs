@@ -13,12 +13,10 @@ namespace CypherTools.Bot.Services
     {
         public static async Task<List<Artifact>> GetAllArtifactsAsync()
         {
-            using (var db = new CypherContext(DatabaseHelper.GetDbContextOptions()))
-            {
-                var artList = await db.Artifacts.ToListAsync();
+            using var db = new CypherContext(DatabaseHelper.GetDbContextOptions());
+            var artList = await db.Artifacts.ToListAsync();
 
-                return artList;
-            }
+            return artList;
         }
 
         public static async Task<Artifact> GetRandomArtifactAsync(string genre = "")
@@ -57,12 +55,10 @@ namespace CypherTools.Bot.Services
 
         public static async Task<List<ArtifactQuirk>> GetAllArtifactQuirksAsync()
         {
-            using (var db = new CypherContext(DatabaseHelper.GetDbContextOptions()))
-            {
-                var artList = await db.ArtifactQuirks.ToListAsync();
+            using var db = new CypherContext(DatabaseHelper.GetDbContextOptions());
+            var artList = await db.ArtifactQuirks.ToListAsync();
 
-                return artList;
-            }
+            return artList;
         }
 
         public static async Task<ArtifactQuirk> GetRandomArtifactQuirkAsync()
@@ -76,30 +72,24 @@ namespace CypherTools.Bot.Services
 
         public static async Task<List<UnidentifiedArtifact>> GetAllUnidentifiedArtifactsAsync()
         {
-            using (var db = new CypherContext(DatabaseHelper.GetDbContextOptions()))
-            {
-                var artifacts = await db.UnidentifiedArtifacts.ToListAsync();
-                return artifacts;
-            }
+            using var db = new CypherContext(DatabaseHelper.GetDbContextOptions());
+            var artifacts = await db.UnidentifiedArtifacts.ToListAsync();
+            return artifacts;
         }
 
         public static async Task SaveUnidentifiedArtifactAsync(UnidentifiedArtifact unidentifiedArtifact)
         {
-            using (var db = new CypherContext(DatabaseHelper.GetDbContextOptions()))
-            {
-                db.UnidentifiedArtifacts.Add(unidentifiedArtifact);
-                await db.SaveChangesAsync();
-            }
+            using var db = new CypherContext(DatabaseHelper.GetDbContextOptions());
+            db.UnidentifiedArtifacts.Add(unidentifiedArtifact);
+            await db.SaveChangesAsync();
         }
 
         public static async Task RemoveUnidentifiedArtifactAsync(int unidentifiedArtifactID)
         {
-            using (var db = new CypherContext(DatabaseHelper.GetDbContextOptions()))
-            {
-                var uArtifactToRemove = new UnidentifiedArtifact() { UnidentifiedArtifactId = unidentifiedArtifactID };
-                db.UnidentifiedArtifacts.Remove(uArtifactToRemove);
-                await db.SaveChangesAsync();
-            }
+            using var db = new CypherContext(DatabaseHelper.GetDbContextOptions());
+            var uArtifactToRemove = new UnidentifiedArtifact() { UnidentifiedArtifactId = unidentifiedArtifactID };
+            db.UnidentifiedArtifacts.Remove(uArtifactToRemove);
+            await db.SaveChangesAsync();
         }
 
     }

@@ -24,6 +24,11 @@
     </Content>
   </ItemGroup>
 
+
+  <ItemGroup>
+    <None Remove="Data\CharacterList.cs~RF3edfa36.TMP" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="CypherTools.Core" Version="1.0.2" />
     <PackageReference Include="DSharpPlus" Version="3.2.3" />

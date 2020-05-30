@@ -52,10 +52,12 @@ namespace CypherTools.Bot.Commands
                     await ctx.RespondAsync("Hey!  you don't have any characters!");
                 }
 
-                var responses = new List<string>();
-                responses.Add("What cypher do you want to use?" + Environment.NewLine);
+                var responses = new List<string>
+                {
+                    "What cypher do you want to use?" + Environment.NewLine,
 
-                responses.Add("Here are your cyphers:");
+                    "Here are your cyphers:"
+                };
                 int i = 1;
                 foreach (var cypher in chr.Cyphers)
                 {
@@ -114,10 +116,12 @@ namespace CypherTools.Bot.Commands
                     return;
                 }
 
-                var responses = new List<string>();
-                responses.Add("What item do you want to use?" + Environment.NewLine);
+                var responses = new List<string>
+                {
+                    "What item do you want to use?" + Environment.NewLine,
 
-                responses.Add("Here is your inventory:");
+                    "Here is your inventory:"
+                };
                 int i = 1;
                 foreach (var inv in chr.Inventory)
                 {
@@ -261,13 +265,14 @@ namespace CypherTools.Bot.Commands
                     EffectOption = cy.EffectOptions.Count() == 0 ? "" : cy.EffectOptions.ToList()[rnd.Next(0, cy.EffectOptions.Count() - 1)].EffectDescription
                 };
 
-                var responses = new List<string>();
-
-                responses.Add($"Here is what you found:");
-                responses.Add($"**Name:** {cypher.Name}");
-                responses.Add($"**Level:** {cypher.Level}");
-                responses.Add($"**Effect:** {cypher.Effect}");
-                responses.Add($"Do you wish to keep this one? (y/n)");
+                var responses = new List<string>
+                {
+                    $"Here is what you found:",
+                    $"**Name:** {cypher.Name}",
+                    $"**Level:** {cypher.Level}",
+                    $"**Effect:** {cypher.Effect}",
+                    $"Do you wish to keep this one? (y/n)"
+                };
 
                 await ctx.RespondAsync(string.Join(Environment.NewLine, responses));
 
@@ -317,18 +322,19 @@ namespace CypherTools.Bot.Commands
                     Quirk = quirk.Quirk
                 };
 
-                var responses = new List<string>();
+                var responses = new List<string>
+                {
+                    $"Here is what you found:",
+                    $"**Name:** {artifact.Name}",
+                    $"**Level:** {artifact.Level}",
+                    $"**Form:** {artifact.Form}",
+                    $"**Genre:** {artifact.Genre}",
+                    $"**Effect:** {artifact.Effect}",
+                    $"**Depletion:** {artifact.Depletion}",
+                    $"**Quirk:** {artifact.Quirk}",
 
-                responses.Add($"Here is what you found:");
-                responses.Add($"**Name:** {artifact.Name}");
-                responses.Add($"**Level:** {artifact.Level}");
-                responses.Add($"**Form:** {artifact.Form}");
-                responses.Add($"**Genre:** {artifact.Genre}");
-                responses.Add($"**Effect:** {artifact.Effect}");
-                responses.Add($"**Depletion:** {artifact.Depletion}");
-                responses.Add($"**Quirk:** {artifact.Quirk}");
-
-                responses.Add($"Do you wish to keep this one? (y/n)");
+                    $"Do you wish to keep this one? (y/n)"
+                };
 
                 await ctx.RespondAsync(string.Join(Environment.NewLine, responses));
 
@@ -356,10 +362,12 @@ namespace CypherTools.Bot.Commands
 
                 var chr = await Data.CharacterList.GetCurrentPlayersCharacterAsync(ctx);
 
-                var responses = new List<string>();
-                responses.Add("What Item do you want to add?");
-                responses.Add("0. Add a new Item.");
-                responses.Add(await Data.CharacterList.GetCurrentCharacterInventoryAsync(ctx));
+                var responses = new List<string>
+                {
+                    "What Item do you want to add?",
+                    "0. Add a new Item.",
+                    await Data.CharacterList.GetCurrentCharacterInventoryAsync(ctx)
+                };
 
                 await ctx.RespondAsync(string.Join(Environment.NewLine, responses));
 
@@ -453,10 +461,11 @@ namespace CypherTools.Bot.Commands
                     return;
                 }
 
-                var responses = new List<string>();
-
-                responses.Add($"Here is {ctx.Member.DisplayName}'s Character");
-                responses.Add("**Name:** " + chr.Name);
+                var responses = new List<string>
+                {
+                    $"Here is {ctx.Member.DisplayName}'s Character",
+                    "**Name:** " + chr.Name
+                };
 
                 foreach (var pool in chr.Pools.OrderBy(x => x.PoolIndex))
                 {
@@ -818,12 +827,13 @@ namespace CypherTools.Bot.Commands
 
                     chr.Player = ctx.Member.Username + ctx.User.Discriminator;
                     chr.Cyphers = new List<CharacterCypher>();
-                    chr.RecoveryRolls = new List<CharacterRecoveryRoll>();
-
-                    chr.RecoveryRolls.Add(new CharacterRecoveryRoll { IsUsed = false, RollName = "first" });
-                    chr.RecoveryRolls.Add(new CharacterRecoveryRoll { IsUsed = false, RollName = "second" });
-                    chr.RecoveryRolls.Add(new CharacterRecoveryRoll { IsUsed = false, RollName = "third" });
-                    chr.RecoveryRolls.Add(new CharacterRecoveryRoll { IsUsed = false, RollName = "fourth" });
+                    chr.RecoveryRolls = new List<CharacterRecoveryRoll>
+                    {
+                        new CharacterRecoveryRoll { IsUsed = false, RollName = "first" },
+                        new CharacterRecoveryRoll { IsUsed = false, RollName = "second" },
+                        new CharacterRecoveryRoll { IsUsed = false, RollName = "third" },
+                        new CharacterRecoveryRoll { IsUsed = false, RollName = "fourth" }
+                    };
 
                     var cyls = (IEnumerable<Cypher>)await CypherHelper.GetRandomCypherAsync(2);
                     var rnd = RandomGenerator.GetRandom();
@@ -840,9 +850,11 @@ namespace CypherTools.Bot.Commands
                         Form = x.Forms.ToList()[rnd.Next(0, x.Forms.Count() - 1)].FormDescription
                     }).ToList();
 
-                    chr.Inventory = new List<CharacterInventory>();
-                    chr.Inventory.Add(new CharacterInventory { ItemName = "Backpack", Qty = 1 });
-                    chr.Inventory.Add(new CharacterInventory { ItemName = "Torch", Qty = 5 });
+                    chr.Inventory = new List<CharacterInventory>
+                    {
+                        new CharacterInventory { ItemName = "Backpack", Qty = 1 },
+                        new CharacterInventory { ItemName = "Torch", Qty = 5 }
+                    };
 
                     var response = $"Hey!  Here is a new character for {ctx.Member.DisplayName}" + Environment.NewLine;
                     response += "**Name:** " + chr.Name + Environment.NewLine;
@@ -999,16 +1011,11 @@ namespace CypherTools.Bot.Commands
 
                     if (jsonstr.Length > 2000)
                     {
-                        var jsonStream = new MemoryStream(System.Text.ASCIIEncoding.Unicode.GetBytes(jsonstr));
+                        var jsonStream = new MemoryStream(System.Text.ASCIIEncoding.Unicode.GetBytes(jsonstr))
+                        {
+                            Position = 0
+                        };
 
-                        jsonStream.Position = 0;
-                        //var stream = new MemoryStream();
-                        //using (var sw = new StreamWriter(stream))
-                        //{
-                        //    sw.Write(jsonstr);
-                        //    sw.Flush();
-                        //    stream.Position = 0;
-                        //}
                         await ctx.RespondWithFileAsync(jsonStream, chr.Name + ".txt", "Here you go!");
                         return;
                     }
@@ -1071,7 +1078,7 @@ namespace CypherTools.Bot.Commands
                 {
                     var chrString = JsonConvert.SerializeObject(chr, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
 
-                    await CharacterHelper.SaveCurrentCharacterAsync("", chr);
+                    await CharacterHelper.SaveCurrentCharacterAsync(chr);
                 }
                 catch (Exception ex)
                 {
@@ -1097,8 +1104,10 @@ namespace CypherTools.Bot.Commands
 
                 var chars = await CharacterHelper.GetCurrentPlayersCharactersAsync(ctx);
 
-                var response = new List<string>();
-                response.Add("Here are your saved characters:");
+                var response = new List<string>
+                {
+                    "Here are your saved characters:"
+                };
                 foreach (var character in chars.OrderBy(x => x.Name).Select((model, i) => new { model, i }))
                 {
                     response.Add($"{character.i + 1}. {character.model.Name}");
