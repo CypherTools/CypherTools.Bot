@@ -23,7 +23,7 @@ namespace CypherTools.Bot.Services
         {
             var oddList = await GetAllOdditysAsync();
 
-            var i = RandomGenerator.GetRandom().Next(0, oddList.Count() - 1);
+            var i = RandomGenerator.GetRandom().Next(0, oddList.Count());
 
             return oddList[i];
         }
@@ -37,7 +37,7 @@ namespace CypherTools.Bot.Services
             {
                 var OddityList = await GetAllOdditysAsync();
 
-                ls.Add(OddityList[rnd.Next(1, OddityList.Count)]);
+                ls.Add(OddityList[rnd.Next(0, OddityList.Count)]);
             }
 
             return ls;
