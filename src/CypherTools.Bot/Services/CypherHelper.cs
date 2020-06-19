@@ -22,7 +22,7 @@ namespace CypherTools.Bot.Services
         {
             var cyList = await GetAllCyphersAsync();
 
-            var i = new Random().Next(0, cyList.Count() - 1);
+            var i = new Random().Next(0, cyList.Count());
 
             return cyList[i];
         }
@@ -35,7 +35,7 @@ namespace CypherTools.Bot.Services
             for (int i = 0; i < numberOfCyphers; i++)
             {
                 var cypherList = await GetAllCyphersAsync();
-                ls.Add(cypherList[rnd.Next(1, cypherList.Count)]);
+                ls.Add(cypherList[rnd.Next(0, cypherList.Count)]);
             }
 
             return ls;

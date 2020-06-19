@@ -28,7 +28,7 @@ namespace CypherTools.Bot.Services
                 artList = artList.Where(x => x.Genre == genre).ToList();
             }
 
-            var i = RandomGenerator.GetRandom().Next(0, artList.Count() - 1);
+            var i = RandomGenerator.GetRandom().Next(0, artList.Count());
 
             return artList[i];
         }
@@ -47,7 +47,7 @@ namespace CypherTools.Bot.Services
                     artifactList = artifactList.Where(x => x.Genre == genre).ToList();
                 }
 
-                ls.Add(artifactList[rnd.Next(1, artifactList.Count)]);
+                ls.Add(artifactList[rnd.Next(0, artifactList.Count)]);
             }
 
             return ls;
@@ -65,7 +65,7 @@ namespace CypherTools.Bot.Services
         {
             var artQuiList = await GetAllArtifactQuirksAsync();
 
-            var i = RandomGenerator.GetRandom().Next(0, artQuiList.Count() - 1);
+            var i = RandomGenerator.GetRandom().Next(0, artQuiList.Count());
 
             return artQuiList[i];
         }
