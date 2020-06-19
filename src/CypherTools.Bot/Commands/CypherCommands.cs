@@ -261,8 +261,8 @@ namespace CypherTools.Bot.Commands
                     Source = cy.Source,
                     Type = cy.Type,
                     IsIdentified = false,
-                    Form = cy.Forms.ToList()[rnd.Next(0, cy.Forms.Count() - 1)].FormDescription,
-                    EffectOption = cy.EffectOptions.Count() == 0 ? "" : cy.EffectOptions.ToList()[rnd.Next(0, cy.EffectOptions.Count() - 1)].EffectDescription
+                    Form = cy.Forms.ToList()[rnd.Next(0, cy.Forms.Count())].FormDescription,
+                    EffectOption = cy.EffectOptions.Count() == 0 ? "" : cy.EffectOptions.ToList()[rnd.Next(0, cy.EffectOptions.Count())].EffectDescription
                 };
 
                 var responses = new List<string>
@@ -588,7 +588,7 @@ namespace CypherTools.Bot.Commands
                     var cypher = await CypherHelper.GetRandomCypherAsync();
                     var rnd = RandomGenerator.GetRandom();
 
-                    var cf = cypher.Forms.ToList()[rnd.Next(0, cypher.Forms.Count() - 1)];
+                    var cf = cypher.Forms.ToList()[rnd.Next(0, cypher.Forms.Count())];
                     var response = "Wow!  look what I found out back!" + Environment.NewLine;
                     response += "**Name:** " + cypher.Name + Environment.NewLine;
                     response += "**Level:** " + cypher.Level + Environment.NewLine;
@@ -628,7 +628,7 @@ namespace CypherTools.Bot.Commands
                     var cy = await CypherHelper.GetRandomCypherAsync();
                     var rnd = RandomGenerator.GetRandom();
 
-                    var cf = cy.Forms.ToList()[rnd.Next(0, cy.Forms.Count() - 1)];
+                    var cf = cy.Forms.ToList()[rnd.Next(0, cy.Forms.Count())];
 
                     var cypher = new UnidentifiedCypher()
                     {
@@ -643,7 +643,7 @@ namespace CypherTools.Bot.Commands
                         Type = cy.Type,
                         IsIdentified = false,
                         Form = cf.Form + " - " + cf.FormDescription,
-                        EffectOption = cy.EffectOptions.Count() == 0 ? "" : cy.EffectOptions.ToList()[rnd.Next(0, cy.EffectOptions.Count() - 1)].EffectDescription
+                        EffectOption = cy.EffectOptions.Count() == 0 ? "" : cy.EffectOptions.ToList()[rnd.Next(0, cy.EffectOptions.Count())].EffectDescription
                     };
 
                     var response = "Wow!  look what I found out back!" + Environment.NewLine;
@@ -847,7 +847,7 @@ namespace CypherTools.Bot.Commands
                         Name = x.Name,
                         Source = x.Source,
                         Type = x.Type,
-                        Form = x.Forms.ToList()[rnd.Next(0, x.Forms.Count() - 1)].FormDescription
+                        Form = x.Forms.ToList()[rnd.Next(0, x.Forms.Count())].FormDescription
                     }).ToList();
 
                     chr.Inventory = new List<CharacterInventory>
