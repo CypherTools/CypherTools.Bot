@@ -1267,7 +1267,7 @@ namespace CypherTools.Bot.Commands
             {
                 var chr = await Data.CharacterList.GetCurrentPlayersCharacterAsync(ctx);
 
-                chr.RecoveryRolls.ForEach(x => x.IsUsed = false);
+                ((List<CharacterRecoveryRoll>)chr.RecoveryRolls).ForEach(x => x.IsUsed = false);
 
                 string response = $"{chr.Name}'s recovery rolls are reset.";
 
