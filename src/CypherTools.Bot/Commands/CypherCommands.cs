@@ -588,11 +588,16 @@ namespace CypherTools.Bot.Commands
                     var cypher = await CypherHelper.GetRandomCypherAsync();
                     var rnd = RandomGenerator.GetRandom();
 
-                    var cf = cypher.Forms.ToList()[rnd.Next(0, cypher.Forms.Count())];
                     var response = "Wow!  look what I found out back!" + Environment.NewLine;
                     response += "**Name:** " + cypher.Name + Environment.NewLine;
                     response += "**Level:** " + cypher.Level + Environment.NewLine;
-                    response += "**Form:** " + cf.Form + " - " + cf.FormDescription + Environment.NewLine;
+                    
+                    if (cypher.Forms.Count() > 0)
+                    {
+                        var cf = cypher.Forms.ToList()[rnd.Next(0, cypher.Forms.Count())];
+                        response += "**Form:** " + cf.Form + " - " + cf.FormDescription + Environment.NewLine;
+                    }
+                    
                     response += "**Effect:** " + cypher.Effect;
                     if (cypher.EffectOptions.Any())
                     {
@@ -628,7 +633,12 @@ namespace CypherTools.Bot.Commands
                     var cy = await CypherHelper.GetRandomCypherAsync();
                     var rnd = RandomGenerator.GetRandom();
 
-                    var cf = cy.Forms.ToList()[rnd.Next(0, cy.Forms.Count())];
+                    CypherFormOption cf = null;
+
+                    if (cy.Forms.Count() > 0)
+                    {
+                        cf = cy.Forms.ToList()[rnd.Next(0, cy.Forms.Count())];
+                    }
 
                     var cypher = new UnidentifiedCypher()
                     {
@@ -642,7 +652,7 @@ namespace CypherTools.Bot.Commands
                         Source = cy.Source,
                         Type = cy.Type,
                         IsIdentified = false,
-                        Form = cf.Form + " - " + cf.FormDescription,
+                        Form = cf == null ? "" : cf.Form + " - " + cf.FormDescription,
                         EffectOption = cy.EffectOptions.Count() == 0 ? "" : cy.EffectOptions.ToList()[rnd.Next(0, cy.EffectOptions.Count())].EffectDescription
                     };
 
@@ -807,16 +817,6 @@ namespace CypherTools.Bot.Commands
                         }
                     }
 
-                    //while (loop)
-                    //{
-                    //    var msgMight = await interactivity.WaitForMessageAsync(xm => xm.Author.Id == ctx.User.Id && xm.Content.ToLower() == "What is your character's Might?", TimeSpan.FromMinutes(1));
-                    //    if (msgName != null)
-                    //    {
-                    //        chr.Name = msgName.Message.Content;
-                    //        loop = false;
-                    //    }
-                    //}
-
                     chr.Pools.Add(new CharacterPool() { Name = "Might", PoolIndex = 0, PoolMax = 10, PoolCurrentVaue = 10 });
                     chr.Pools.Add(new CharacterPool() { Name = "Speed", PoolIndex = 1, PoolMax = 10, PoolCurrentVaue = 10 });
                     chr.Pools.Add(new CharacterPool() { Name = "Intellect", PoolIndex = 2, PoolMax = 10, PoolCurrentVaue = 10 });
@@ -835,20 +835,9 @@ namespace CypherTools.Bot.Commands
                         new CharacterRecoveryRoll { IsUsed = false, RollName = "fourth" }
                     };
 
-                    var cyls = (IEnumerable<Cypher>)await CypherHelper.GetRandomCypherAsync(2);
-                    var rnd = RandomGenerator.GetRandom();
-                    chr.Cyphers = cyls.Select(x => new CharacterCypher()
-                    {
-                        CypherId = x.CypherId,
-                        Effect = x.Effect,
-                        LevelBonus = x.LevelBonus,
-                        LevelDie = x.LevelDie,
-                        Level = x.Level,
-                        Name = x.Name,
-                        Source = x.Source,
-                        Type = x.Type,
-                        Form = x.Forms.ToList()[rnd.Next(0, x.Forms.Count())].FormDescription
-                    }).ToList();
+                    var cyls = await CypherHelper.GetRandomCharacterCyphersAsync(2);
+
+                    chr.Cyphers = cyls;
 
                     chr.Inventory = new List<CharacterInventory>
                     {
