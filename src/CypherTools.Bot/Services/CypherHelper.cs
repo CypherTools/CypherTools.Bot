@@ -27,7 +27,7 @@ namespace CypherTools.Bot.Services
             return cyList[i];
         }
 
-        public static async Task<List<Cypher>> GetRandomCypherAsync(int numberOfCyphers)
+        public static async Task<List<Cypher>> GetRandomCyphersAsync(int numberOfCyphers)
         {
             var ls = new List<Cypher>();
             var rnd = RandomGenerator.GetRandom();
@@ -40,6 +40,47 @@ namespace CypherTools.Bot.Services
 
             return ls;
         }
+
+        public static async Task<CharacterCypher> GetRandomCharacterCypherAsync()
+        {
+            var cypher = await GetRandomCypherAsync();
+
+            var charCypher = new CharacterCypher();
+
+            var rnd = RandomGenerator.GetRandom();
+
+            charCypher.CypherId = cypher.CypherId;
+            charCypher.Effect = cypher.Effect;
+            charCypher.LevelBonus = cypher.LevelBonus;
+            charCypher.LevelDie = cypher.LevelDie;
+            charCypher.Level = cypher.Level;
+            charCypher.Name = cypher.Name;
+            charCypher.Source = cypher.Source;
+            charCypher.Type = cypher.Type;
+            charCypher.Form = "";
+
+            if (cypher.Forms.Count > 0)
+            {
+                var cf = cypher.Forms.ToList()[rnd.Next(0, cypher.Forms.Count())];
+
+                charCypher.Form = cf.Form + " - " + cf.FormDescription;
+            }
+
+            return charCypher;
+        }
+
+        public static async Task<List<CharacterCypher>> GetRandomCharacterCyphersAsync(int numberOfCyphers)
+        {
+            var cyList = new List<CharacterCypher>();
+
+            for (int i = 0; i < numberOfCyphers; i++)
+            {
+                cyList.Add(await GetRandomCharacterCypherAsync());
+            }
+
+            return cyList;
+        }
+
 
         public static async Task RemoveUnidentifiedCypherAsync(int unidentifiedCypherID)
         {
